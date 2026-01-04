@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@android:color/white"
+    android:padding="16dp">
+
+    <LinearLayout
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <TextView
+            android:id="@+id/textView2"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Selecione o tipo"
+            android:textSize="18sp"
+            android:textStyle="bold"
+            android:paddingBottom="16dp"
+            android:textColor="@color/black" />
+
+        <TextView android:id="@+id/txtSalario" android:layout_width="match_parent" android:layout_height="wrap_content" android:padding="12dp" android:text="Salário" android:textColor="@color/black" android:textSize="16sp" />
+        <TextView android:id="@+id/txtAlimentacao" android:layout_width="match_parent" android:layout_height="wrap_content" android:padding="12dp" android:text="Despesa Alimentação" android:textColor="@color/black" android:textSize="16sp" />
+        <TextView android:id="@+id/txtTransporte" android:layout_width="match_parent" android:layout_height="wrap_content" android:padding="12dp" android:text="Despesa Transporte" android:textColor="@color/black" android:textSize="16sp" />
+        <TextView android:id="@+id/txtLazer" android:layout_width="match_parent" android:layout_height="wrap_content" android:padding="12dp" android:text="Despesa Lazer" android:textColor="@color/black" android:textSize="16sp" />
+        <TextView android:id="@+id/txtSaude" android:layout_width="match_parent" android:layout_height="wrap_content" android:padding="12dp" android:text="Despesa Saúde" android:textColor="@color/black" android:textSize="16sp" />
+        <TextView android:id="@+id/txtPet" android:layout_width="match_parent" android:layout_height="wrap_content" android:padding="12dp" android:text="Despesa Pets" android:textColor="@color/black" android:textSize="16sp" />
+        <TextView android:id="@+id/txtLuz" android:layout_width="match_parent" android:layout_height="wrap_content" android:padding="12dp" android:text="Despesa Luz" android:textColor="@color/black" android:textSize="16sp" />
+        <TextView android:id="@+id/txtAgua" android:layout_width="match_parent" android:layout_height="wrap_content" android:padding="12dp" android:text="Despesa Água" android:textColor="@color/black" android:textSize="16sp" />
+        <TextView android:id="@+id/txtTelefonia" android:layout_width="match_parent" android:layout_height="wrap_content" android:padding="12dp" android:text="Despesa Telefonia e Internet" android:textColor="@color/black" android:textSize="16sp" />
+        <TextView android:id="@+id/txtMoradia" android:layout_width="match_parent" android:layout_height="wrap_content" android:padding="12dp" android:text="Despesa Moradia" android:textColor="@color/black" android:textSize="16sp" />
+
+    </LinearLayout>
+</androidx.constraintlayout.widget.ConstraintLayout>
