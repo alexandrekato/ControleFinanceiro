@@ -5,10 +5,15 @@ import android.widget.EditText
 import androidx.appcompat.app.AppCompatActivity
 import java.util.Calendar
 import android.app.DatePickerDialog
+import android.content.Intent
 import android.widget.Button
 import android.widget.Toast
 import androidx.lifecycle.lifecycleScope
 import kotlinx.coroutines.launch
+import android.graphics.Color
+import kotlinx.coroutines.flow.combine
+import java.text.NumberFormat
+import java.util.Locale
 
 class MainActivity : AppCompatActivity() {
 
@@ -16,7 +21,7 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
-        // 1. Encontre o seu EditText pelo ID
+        // 1. Encontra o seu EditText pelo ID
         val editTipoTransacao = findViewById<EditText>(R.id.editTextTipoEntrada)
 
         // 2. Importante: impede que o teclado abra ao clicar no EditText
@@ -27,7 +32,7 @@ class MainActivity : AppCompatActivity() {
         editTipoTransacao.setOnClickListener {
             val modal = ModalSelecao()
 
-            // Definimos o que acontece quando o usuário escolhe uma opção no modal
+            // Define o que acontece quando o usuário escolhe uma opção no modal
             modal.aoSelecionar = { tipoSelecionado ->
                 editTipoTransacao.setText(tipoSelecionado) // Coloca o texto no EditText
             }
@@ -113,7 +118,50 @@ class MainActivity : AppCompatActivity() {
                 Toast.makeText(this, "Por favor, preencha todos os campos.", Toast.LENGTH_SHORT).show()
             }
         }
-        // --- FIM DO NOVO CÓDIGO ---
+        val btnHistorico = findViewById<Button>(R.id.Historico)
+        btnHistorico.setOnClickListener {
+            // Cria uma Intenção para abrir a HistoricoActivity
+            val intent = Intent(this, HistoricoActivity::class.java)
+            startActivity(intent)
+        }
+        // --- INÍCIO DO CÓDIGO DO CÁLCULO DE SALDO ---
+
+        // 1. Encontra o EditText que vai mostrar o saldo
+        val txtSaldo = findViewById<EditText>(R.id.editTextView10)
+
+        // 2. Cria os Flows que buscam as entradas e saídas do DAO
+        val flowEntradas = dao.calcularEntradas()
+        val flowSaidas = dao.calcularSaidas()
+
+        // 3. Usa uma coroutine para observar as mudanças nos dois flows
+        lifecycleScope.launch {
+            // A função 'combine' junta os resultados mais recentes de ambos os flows.
+            // Sempre que um novo lançamento for registrado, este bloco será executado.
+            combine(flowEntradas, flowSaidas) { totalEntradas, totalSaidas ->
+                // O valor do banco pode ser nulo se não houver lançamentos, então usamos '?: 0.0'
+                val entradas = totalEntradas ?: 0.0
+                val saidas = totalSaidas ?: 0.0
+
+                // Calcula o saldo final (Entradas - Saídas)
+                val saldo = entradas - saidas
+
+                // Retorna o saldo para ser usado na próxima etapa
+                saldo
+            }.collect { saldoCalculado ->
+                // 4. Formata o saldo como moeda (R$) e exibe na tela
+                val formatoMoeda = NumberFormat.getCurrencyInstance(Locale("pt", "BR"))
+                txtSaldo.setText(formatoMoeda.format(saldoCalculado))
+
+                // 5. Opcional: Mudar a cor do texto do saldo
+                if (saldoCalculado < 0) {
+                    txtSaldo.setTextColor(Color.RED)
+                } else {
+                    txtSaldo.setTextColor(Color.rgb(0, 100, 0)) // Verde escuro
+                }
+            }
+        }
+        // --- FIM DO CÓDIGO DO CÁLCULO DE SALDO ---
+
 
     } // Fim da função onCreate
 } // Fim da classe MainActivity
